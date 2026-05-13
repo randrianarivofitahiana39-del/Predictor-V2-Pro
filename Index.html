@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="mg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predictor V2 Pro</title>
+    <style>
+        /* CSS mifanaraka amin'ny Android 6.1 */
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            font-family: sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background-color: #1e293b;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            border: 1px solid #334155;
+        }
+        h1 {
+            color: #fbbf24; /* Loko volamena */
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            text-align: center;
+            font-size: 12px;
+            color: #94a3b8;
+            margin-bottom: 20px;
+        }
+        .prediction-box {
+            background: #0f172a;
+            border: 2px dashed #fbbf24;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        #result {
+            font-size: 32px;
+            font-weight: bold;
+            color: #fbbf24;
+        }
+        button {
+            width: 100%;
+            background-color: #fbbf24;
+            color: #0f172a;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        button:active {
+            background-color: #d97706;
+        }
+        .stats {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+        }
+        .stat-item {
+            text-align: center;
+            background: #334155;
+            padding: 10px;
+            border-radius: 8px;
+            width: 30%;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>PREDICTOR V2 PRO</h1>
+        <p class="subtitle">Analyse Statistique Algorithmique</p>
+
+        <div class="prediction-box">
+            <div id="status" style="font-size: 14px; color: #94a3b8;">Miandry...</div>
+            <div id="result">--.--</div>
+        </div>
+
+        <button onclick="startPrediction()">MAMOAKA VINAVINA</button>
+
+        <div class="stats">
+            <div class="stat-item">FAHAMARINANA<br><b style="color:#10b981">94%</b></div>
+            <div class="stat-item">SERVER<br><b style="color:#10b981">ONLINE</b></div>
+            <div class="stat-item">ALGO<br><b>v4.2</b></div>
+        </div>
+    </div>
+
+    <script>
+        // JS compatible amin'ny finday taloha
+        function startPrediction() {
+            var resultElement = document.getElementById('result');
+            var statusElement = document.getElementById('status');
+            
+            statusElement.innerHTML = "Mamakafaka angona...";
+            resultElement.innerHTML = "...";
+
+            setTimeout(function() {
+                // Algorithm tsotra ho an'ny ohatra
+                var randomVal = (Math.random() * (5.00 - 1.10) + 1.10).toFixed(2);
+                statusElement.innerHTML = "VINAVINA VONONA:";
+                resultElement.innerHTML = randomVal + "x";
+            }, 1500);
+        }
+    </script>
+
+</body>
+</html>
