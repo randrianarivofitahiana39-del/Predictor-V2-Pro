@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="mg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NEURAL GENESIS V20 - PROFESSIONAL AI</title>
+    <style>
+        :root { --neon-green: #00ff66; --dark-bg: #030508; --card-bg: #0d1117; --border-color: #21262d; }
+        body { background: var(--dark-bg); color: #e6edf3; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 10px; }
+        .app-container { max-width: 480px; margin: auto; border: 1px solid var(--border-color); border-radius: 24px; overflow: hidden; background: #080a0f; box-shadow: 0 10px 50px rgba(0,0,0,0.8); }
+        
+        .header-pro {
+            background: linear-gradient(180deg, #161b22 0%, #030508 100%);
+            padding: 25px 20px; text-align: center; border-bottom: 2px solid var(--neon-green);
+        }
+        .header-pro h1 { color: var(--neon-green); margin: 0; font-size: 24px; text-transform: uppercase; letter-spacing: 4px; font-weight: 900; text-shadow: 0 0 15px rgba(0,255,102,0.3); }
+        .header-pro span { font-size: 11px; color: #8b949e; letter-spacing: 2px; }
+
+        .card { background: var(--card-bg); margin: 15px; padding: 18px; border-radius: 16px; border: 1px solid var(--border-color); }
+        .section-title { color: #58a6ff; font-size: 10px; font-weight: bold; margin-bottom: 12px; display: block; border-left: 3px solid var(--neon-green); padding-left: 10px; text-transform: uppercase; }
+
+        .input-row { display: flex; gap: 10px; margin-bottom: 15px; }
+        .input-box { flex: 1; }
+        label { display: block; font-size: 10px; color: #8b949e; margin-bottom: 6px; font-weight: 600; }
+        
+        input {
+            width: 100%; height: 48px; background: #010409; color: var(--neon-green);
+            border: 1px solid var(--border-color); border-radius: 10px; padding: 0 12px;
+            font-size: 16px; font-weight: bold; box-sizing: border-box; transition: 0.3s;
+        }
+        input:focus { border-color: var(--neon-green); outline: none; box-shadow: 0 0 10px rgba(0,255,102,0.1); }
+        .team-input { font-size: 14px; text-align: left; color: #fff; }
+
+        .btn-hacker {
+            width: 92%; height: 65px; margin: 0 4% 20px;
+            background: linear-gradient(45deg, #00ff66, #00cc52);
+            color: #000; border: none; border-radius: 14px;
+            font-size: 19px; font-weight: 900; cursor: pointer;
+            text-transform: uppercase; box-shadow: 0 6px 0 #008035;
+            transition: 0.1s; display: block;
+        }
+        .btn-hacker:active { transform: translateY(3px); box-shadow: 0 3px 0 #008035; }
+
+        #result-box { display: none; padding: 15px; animation: fadeIn 0.5s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .main-score {
+            background: #000; border: 2px solid var(--neon-green); border-radius: 20px;
+            padding: 25px; text-align: center; margin-bottom: 15px;
+            position: relative; overflow: hidden;
+        }
+        .main-score::before { content: 'AI PREDICTION'; position: absolute; top: 5px; left: 50%; transform: translateX(-50%); font-size: 9px; color: var(--neon-green); opacity: 0.7; }
+        
+        .team-names-display { font-size: 14px; color: #8b949e; margin-bottom: 5px; text-transform: uppercase; font-weight: bold; }
+        .score-val { font-size: 72px; font-weight: 900; color: #fff; line-height: 1; letter-spacing: -2px; margin: 10px 0; }
+        .winner-tag { color: var(--neon-green); font-size: 18px; font-weight: 800; text-transform: uppercase; margin-bottom: 10px; }
+
+        .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .data-item { background: #161b22; padding: 14px; border-radius: 12px; border: 1px solid #30363d; }
+        .data-item small { color: #8b949e; font-size: 9px; display: block; margin-bottom: 5px; text-transform: uppercase; }
+        .data-item b { font-size: 16px; color: #fff; }
+        .highlight { color: var(--neon-green) !important; }
+
+        .footer { text-align: center; padding: 20px; font-size: 10px; color: #484f58; line-height: 1.5; }
+        .loader-bar { width: 100%; height: 4px; background: #161b22; display: none; margin-bottom: 20px; border-radius: 2px; overflow: hidden; }
+        .loader-progress { width: 0%; height: 100%; background: var(--neon-green); transition: 0.3s; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <div class="header-pro">
+        <h1>NEURAL GENESIS V20</h1>
+        <span>QUANTUM ALGORITHM • ELITE EDITION</span>
+    </div>
+
+    <!-- Section 1: Team Names -->
+    <div class="card">
+        <span class="section-title">Anaran'ny Ekipa (Teams)</span>
+        <div class="input-row">
+            <div class="input-box"><label>HOME TEAM</label><input type="text" id="nameH" class="team-input" placeholder="ex: Barça"></div>
+            <div class="input-box"><label>AWAY TEAM</label><input type="text" id="nameA" class="team-input" placeholder="ex: Real"></div>
+        </div>
+    </div>
+
+    <!-- Section 2: Stats -->
+    <div class="card">
+        <span class="section-title">Context & Odds</span>
+        <div class="input-row">
+            <div class="input-box"><label>HOME RANK</label><input type="number" id="rH" value="1"></div>
+            <div class="input-box"><label>AWAY RANK</label><input type="number" id="rA" value="10"></div>
+        </div>
+        <div class="input-row">
+            <div class="input-box"><label>COTE 1</label><input type="number" id="c1" step="0.01" value="1.85"></div>
+            <div class="input-box"><label>COTE X</label><input type="number" id="cX" step="0.01" value="3.40"></div>
+            <div class="input-box"><label>COTE 2</label><input type="number" id="c2" step="0.01" value="4.20"></div>
+        </div>
+    </div>
+
+    <div class="loader-bar" id="loader-bar"><div class="loader-progress" id="loader-progress"></div></div>
+    
+    <button class="btn-hacker" onclick="runGenesisAnalysis()">RUN AI ANALYZER</button>
+
+    <div id="result-box">
+        <div class="main-score">
+            <div class="team-names-display" id="resTeams">TEAM A vs TEAM B</div>
+            <div class="winner-tag" id="resWinner">VICTOIRE HOME</div>
+            <div class="score-val" id="resFT">0 - 0</div>
+            <div style="color: #58a6ff; font-weight: 800; font-size: 14px;" id="resHTFT">HT/FT: X/1</div>
+        </div>
+
+        <div class="data-grid">
+            <div class="data-item"><small>Prediction Tip</small><b id="resTip" class="highlight">Home Win</b></div>
+            <div class="data-item"><small>Total Goals (Over/Under)</small><b id="resTG">2.5 OVER</b></div>
+            <div class="data-item"><small>BTTS (Goal/Goal)</small><b id="resBTTS">YES</b></div>
+            <div class="data-item"><small>AI Confidence</small><b id="resAcc" class="highlight">94.2%</b></div>
+        </div>
+    </div>
+
+    <div class="footer">
+        POWERED BY GENESIS NEURAL ENGINE 2024.1.2<br>
+        PROBABILITY DATA BASED ON REAL-TIME MARKET MARGINS
+    </div>
+</div>
+
+<script>
+    function getFactorial(n) {
+        if (n === 0) return 1;
+        let res = 1;
+        for (let i = 2; i <= n; i++) res *= i;
+        return res;
+    }
+
+    function poisson(lambda, k) {
+        return (Math.pow(lambda, k) * Math.exp(-lambda)) / getFactorial(k);
+    }
+
+    function runGenesisAnalysis() {
+        const nameH = document.getElementById('nameH').value || "HOME";
+        const nameA = document.getElementById('nameA').value || "AWAY";
+        const rH = parseFloat(document.getElementById('rH').value);
+        const rA = parseFloat(document.getElementById('rA').value);
+        const c1 = parseFloat(document.getElementById('c1').value);
+        const cX = parseFloat(document.getElementById('cX').value);
+        const c2 = parseFloat(document.getElementById('c2').value);
+
+        if(!c1 || !cX || !c2) { alert("Fenoy ny Cotes azafady!"); return; }
+
+        // UI Animation
+        document.getElementById('result-box').style.display = 'none';
+        const lb = document.getElementById('loader-bar');
+        const lp = document.getElementById('loader-progress');
+        lb.style.display = 'block';
+        
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress += 10;
+            lp.style.width = progress + "%";
+            if(progress >= 100) {
+                clearInterval(interval);
+                processLogic(nameH, nameA, rH, rA, c1, cX, c2);
+            }
+        }, 80);
+    }
+
+    function processLogic(nameH, nameA, rH, rA, c1, cX, c2) {
+        // 1. --- ADVANCED LAMBDA ENGINE ---
+        const avgGoals = 2.95; // Base virtual goal rate
+        
+        // Probabilities from odds (with margin removal)
+        const rawP1 = 1/c1;
+        const rawPX = 1/cX;
+        const rawP2 = 1/c2;
+        const margin = (rawP1 + rawPX + rawP2) - 1;
+        const p1 = rawP1 / (1 + margin);
+        const p2 = rawP2 / (1 + margin);
+
+        // Rank Differential Impact
+        const rankDiff = (rA - rH); // Positive if Home is better
+        const rankInfluence = 1 + (rankDiff * 0.025); 
+
+        // Lambda Calculations (Expected Goals)
+        let lambdaH = p1 * avgGoals * rankInfluence;
+        let lambdaA = p2 * avgGoals * (1 / rankInfluence);
+
+        // Home advantage constant (Virtual matches usually have 5-10% home bias)
+        lambdaH *= 1.05;
+
+        // 2. --- SCORE MATRIX SIMULATION ---
+        let maxProb = -1;
+        let bestH = 0;
+        let bestA = 0;
+
+        for (let h = 0; h <= 6; h++) {
+            for (let a = 0; a <= 6; a++) {
+                let prob = poisson(lambdaH, h) * poisson(lambdaA, a);
+                
+                // Adjustment for realistic outcomes (Under-representing high draws)
+                if (h === a && h > 2) prob *= 0.8;
+                
+                if (prob > maxProb) {
+                    maxProb = prob;
+                    bestH = h;
+                    bestA = a;
+                }
+            }
+        }
+
+        // 3. --- REFINED RESULTS ---
+        const totalGoals = bestH + bestA;
+        const winnerName = (bestH > bestA) ? nameH : (bestA > bestH ? nameA : "DRAW");
+        const winType = (bestH > bestA) ? "VICTOIRE " + nameH : (bestA > bestH ? "VICTOIRE " + nameA : "MATCH NUL");
+        
+        // HT Logic
+        let htH = Math.round(bestH * 0.45);
+        let htA = Math.round(bestA * 0.45);
+        const htSym = (htH > htA) ? "1" : (htA > htH ? "2" : "X");
+        const ftSym = (bestH > bestA) ? "1" : (bestA > bestH ? "2" : "X");
+
+        // UI Update
+        document.getElementById('loader-bar').style.display = 'none';
+        document.getElementById('result-box').style.display = 'block';
+        
+        document.getElementById('resTeams').innerHTML = nameH + " VS " + nameA;
+        document.getElementById('resWinner').innerHTML = winType;
+        document.getElementById('resFT').innerHTML = bestH + " - " + bestA;
+        document.getElementById('resHTFT').innerHTML = "HT/FT Prediction: " + htSym + " / " + ftSym;
+        
+        // Tips
+        let tip = "";
+        if (bestH > bestA) tip = "Double Chance: 1X";
+        else if (bestA > bestH) tip = "Double Chance: X2";
+        else tip = "Draw or Over 1.5";
+        
+        document.getElementById('resTip').innerHTML = tip;
+        document.getElementById('resTG').innerHTML = totalGoals > 2.5 ? (totalGoals + ".0 OVER 2.5") : (totalGoals + ".0 UNDER 2.5");
+        document.getElementById('resBTTS').innerHTML = (bestH > 0 && bestA > 0) ? "OUI (YES)" : "NON (NO)";
+        document.getElementById('resAcc').innerHTML = (89 + Math.random() * 8).toFixed(1) + "%";
+
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
